@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 
 import WithContext from "../../withContext";
+import { Helmet } from "react-helmet";
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -94,6 +95,9 @@ const Ajouter = props => {
 
   return (
     <>
+      <Helmet>
+        <title>Ajouter - Porte Finder</title>
+      </Helmet>
       <Container className={classes.root}>
         <div className={classes.form}>
           <TextField

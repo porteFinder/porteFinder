@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Helmet } from "react-helmet";
 
 import Container from "@material-ui/core/Container";
 import Divider from "@material-ui/core/Divider";
@@ -59,6 +60,9 @@ const Main = props => {
   };
   return (
     <>
+      <Helmet>
+        <title>Porte Finder</title>
+      </Helmet>
       <Container className={classes.rootmt}>
         <Typography
           className={classes.titleP}

@@ -1,4 +1,5 @@
 import React, { createRef, useState } from "react";
+import { Helmet } from "react-helmet";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -80,6 +81,9 @@ const Login = props => {
   };
   return (
     <>
+      <Helmet>
+        <title>Login - Porte Finder</title>
+      </Helmet>
       <AppBar>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
