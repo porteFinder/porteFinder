@@ -109,6 +109,32 @@ export default class PorteService {
     return portes;
   }
 
+  async find_voisins(coo) {
+    if (coo.split(":").length !== 4) {
+      throw new Error(`${coo} should be xx:xx:xx:xx`);
+    }
+    const split = coo.split(":");
+    for (let i = 0; i < split.length; i++) {
+      if (Number(split[i]) == NaN) {
+        throw new Error(`${split[i]} is not a number`);
+      }
+    }
+    const region = Number(coo.split(":")[0]);
+    const ss = Number(coo.split(":")[1]);
+    const portes = await this.Porte.find();
+    const filtered_portes = portes.filter(
+      p =>
+        p.voisins[0].region === region &&
+        p.voisins[0].min <= ss &&
+        p.voisins[0].max >= ss
+    );
+    if (filtered_portes.length === 0) {
+      throw new Error("Tape a la main fdp");
+    }
+    const autocomplete = filtered_portes[0].voisins;
+    return autocomplete;
+  }
+
   async find_all() {
     return this.Porte.find();
   }

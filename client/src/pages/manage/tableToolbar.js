@@ -40,9 +40,6 @@ const CustomTableToolbar = props => {
   const { numSelected } = props;
   const [openDialogDelete, setOpenDialogDelete] = useState(false);
   const toggleDialogDelete = () => setOpenDialogDelete(!openDialogDelete);
-  const handleDelete = method => {
-    props.clearSelected();
-  };
   return (
     <Toolbar
       className={clsx(classes.root, { [classes.highlight]: numSelected > 0 })}

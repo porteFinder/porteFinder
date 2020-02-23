@@ -26,7 +26,7 @@ const addPorte = async app => {
     {
       coo: [
         Math.floor(Math.random() * 20),
-        Math.floor(Math.random() * 500),
+        Math.floor(Math.random() * 1000),
         Math.floor(Math.random() * 15),
         Math.floor(Math.random() * 6)
       ].join(":"),
@@ -129,5 +129,27 @@ module.exports = app => {
     expect(res.body.porte.code).to.be.equal(porteDB[0].code);
     expect(res.body.porte.code).to.be.equal("jglkdfjgfkd");
     await Porte.deleteMany({});
+
+    await addPorte(app);
+    await addPorte(app);
+    await addPorte(app);
+    await addPorte(app);
+    await addPorte(app);
+    await addPorte(app);
+    await addPorte(app);
+    await addPorte(app);
+    await addPorte(app);
+    await addPorte(app);
+    await addPorte(app);
+    await addPorte(app);
+    await addPorte(app);
+    await addPorte(app);
+    await addPorte(app);
+    await addPorte(app);
+    await addPorte(app);
+    await addPorte(app);
+    await addPorte(app);
+    await addPorte(app);
+    await addPorte(app);
   });
 };

@@ -62,6 +62,34 @@ export default app => {
     }
   );
 
+  route.get(
+    "/autocomplete",
+    celebrate({
+      query: Joi.object({
+        coo: Joi.string().required()
+      })
+    }),
+    async (req, res, next) => {
+      const logger = Container.get("logger");
+      logger.silly(
+        "Calling get autocomplete endpoint with param: %o",
+        req.query.coo
+      );
+      try {
+        const { coo } = req.query;
+        const porteServiceInstance = Container.get(PorteService);
+        const voisins = await porteServiceInstance.find_voisins(coo);
+        return res
+          .status(200)
+          .json({ voisins: voisins })
+          .end();
+      } catch (e) {
+        logger.error("error: %o", e);
+        return next(e);
+      }
+    }
+  );
+
   route.get("/all", middleware.isAuth, async (req, res, next) => {
     const logger = Container.get("logger");
     logger.silly("Calling get all endpoing from user: %o", req.user.username);

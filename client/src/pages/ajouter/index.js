@@ -1,8 +1,11 @@
 import React, { createRef, useEffect } from "react";
+import GetAppIcon from "@material-ui/icons/GetApp";
 
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 
 import WithContext from "../../withContext";
@@ -24,7 +27,11 @@ const useStyles = makeStyles(theme => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: "30%"
+    width: "32%",
+    ["@media (max-width:1280px)"]: {
+      // eslint-disable-line no-useless-computed-key
+      width: "30%"
+    }
   }
 }));
 
@@ -66,9 +73,26 @@ const Ajouter = props => {
       code.current.value = "";
       props.value.setShouldEmptyForm(false);
     }
+    if (refs[0][0].current !== null && props.value.shouldComplete) {
+      refs.map((arr, i) => {
+        arr[0].current.parentElement.parentElement
+          .querySelector("label")
+          .classList.add("MuiInputLabel-shrink");
+        arr[0].current.value = props.value.completeData[i].region;
+        arr[1].current.parentElement.parentElement
+          .querySelector("label")
+          .classList.add("MuiInputLabel-shrink");
+        arr[1].current.value = props.value.completeData[i].min;
+        arr[2].current.parentElement.parentElement
+          .querySelector("label")
+          .classList.add("MuiInputLabel-shrink");
+        arr[2].current.value = props.value.completeData[i].max;
+      });
+      props.value.setShouldComplete(false, []);
+    }
   });
 
-  const refs = [
+  let refs = [
     [constPorte, minPorte, maxPorte],
     [constVoisin1, minVoisin1, maxVoisin1],
     [constVoisin2, minVoisin2, maxVoisin2],
@@ -89,8 +113,19 @@ const Ajouter = props => {
       code: code.current.value,
       voisin: voisins
     };
-    console.log(body);
     props.value.addPorte(body);
+  };
+
+  const autocomplete = async e => {
+    props.value.resetSnackbar();
+    const res = await fetch(`/api/porte/autocomplete?coo=${coo.current.value}`);
+    if (res.status !== 200) {
+      const json = await res.json();
+      props.value.setError(json.errors.message);
+    } else {
+      const json = await res.json();
+      props.value.setShouldComplete(true, json.voisins);
+    }
   };
 
   return (
@@ -100,14 +135,31 @@ const Ajouter = props => {
       </Helmet>
       <Container className={classes.root}>
         <div className={classes.form}>
-          <TextField
-            label="Coordonnées"
-            style={{ margin: 8 }}
-            fullWidth
-            margin="normal"
-            autoComplete="off"
-            inputRef={coo}
-          />
+          <Grid container spacing={1} alignItems="center">
+            <Grid item xs={10}>
+              <TextField
+                label="Coordonnées"
+                style={{ margin: 8 }}
+                fullWidth
+                margin="normal"
+                autoComplete="off"
+                inputRef={coo}
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <Button
+                size="small"
+                variant="contained"
+                color="default"
+                style={{ marginTop: "17px" }}
+                className={classes.button}
+                startIcon={<GetAppIcon />}
+                onClick={autocomplete}
+              >
+                Compléter
+              </Button>
+            </Grid>
+          </Grid>
           <TextField
             label="Code porte"
             style={{ margin: 8 }}

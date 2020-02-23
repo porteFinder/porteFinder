@@ -16,19 +16,13 @@ export default ({ app }) => {
   app.use(config.api.prefix, routes());
 
   app.use(express.static(path.join(__dirname, "..", "client", "build")));
-  // app.use(
-  //   "/static",
-  //   express.static(path.join(__dirname, "..", "client", "build", "static"))
-  // );
+
   if (process.env.NODE_ENV === "production") {
-    console.log("pass");
     app.get("*", (req, res) => {
-      console.log("pass");
       res.sendFile(
         path.resolve(__dirname, "..", "client", "build", "index.html")
       );
     });
-    console.log(path.resolve(__dirname, "..", "client", "build", "index.html"));
   }
 
   // catches 404 and forward them to error handler

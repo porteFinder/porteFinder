@@ -20,7 +20,9 @@ class StateProvider extends Component {
       },
       hasResult: false,
       shouldEmptyForm: false,
-      tab: 0
+      tab: 0,
+      shouldComplete: false,
+      completeData: []
     };
   }
 
@@ -104,6 +106,9 @@ class StateProvider extends Component {
 
   setShouldEmptyForm = value => this.setState({ shouldEmptyForm: value });
 
+  setShouldComplete = (value, data) =>
+    this.setState({ shouldComplete: value, completeData: data });
+
   changeTab = value => this.setState({ tab: value });
 
   render() {
@@ -119,7 +124,8 @@ class StateProvider extends Component {
           setShouldEmptyForm: this.setShouldEmptyForm,
           changeTab: this.changeTab,
           setValidate: this.setValidate,
-          setError: this.setError
+          setError: this.setError,
+          setShouldComplete: this.setShouldComplete
         }}
       >
         {this.props.children}
